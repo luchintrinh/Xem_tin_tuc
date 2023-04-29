@@ -15,10 +15,11 @@ let search = "";
 let currentUser = localStorage.hasOwnProperty("currentUser")
   ? JSON.parse(getFromStorage("currentUser", ""))
   : "";
-
-if (currentUser !== "") {
+// ẩn nút chuyển trang
+containerNumber.style.display = "none";
+if (currentUser) {
   // nếu chưa có bài báo nào thì nút chuyển trang sẽ ẩn đi
-  containerNumber.style.display = "none";
+
   // gán số trang mặc định khi load tin
   pageNum.textContent = curPage;
   // ấn vào nút previous
@@ -42,6 +43,9 @@ if (currentUser !== "") {
   });
 } else {
   alert("Hãy đăng nhập trước!");
+  btnSubmit.addEventListener("click", function () {
+    alert("Hãy đăng nhập!");
+  });
 }
 
 function handler(pageNumber) {
@@ -60,7 +64,6 @@ function handler(pageNumber) {
 
 async function getNews(keyword, page) {
   try {
-    console.log(currentUser);
     const news = await fetch(
       `https://newsapi.org/v2/top-headlines?sortBy=relevancy&q=${keyword}&category=${currentUser.category}&pageSize=${currentUser.pageNumber}&page=${page}&apiKey=2ee74fd226ee4684b40837b69c4e95d7`
     );

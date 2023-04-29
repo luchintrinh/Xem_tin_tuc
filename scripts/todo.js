@@ -48,7 +48,6 @@ function removeTask(task) {
     return parseTask(el).task === task;
   });
   todoArr.splice(find, 1);
-  console.log(todoArr);
   saveToStorage("todoArr", JSON.stringify(todoArr));
   renderTask();
 }
@@ -71,21 +70,31 @@ function task() {
   });
 }
 function renderTask() {
-  console.log();
   let html = "";
   todoArr = localStorage.hasOwnProperty("todoArr")
     ? JSON.parse(getFromStorage("todoArr", []))
     : [];
   todoArr.map(function (task) {
     if (parseTask(task).owner === owner) {
-      html += `
-      <li>
+      if (!task.isDone) {
+        html += `
+        <li>
+            ${parseTask(task).Task}
+            <span class="close" onclick=removeTask(${
+              parseTask(task).task
+            })>×</span>
+          </li>
+        `;
+      } else {
+        html += `
+      <li class="checked">
           ${parseTask(task).Task}
           <span class="close" onclick=removeTask(${
             parseTask(task).task
           })>×</span>
         </li>
       `;
+      }
     }
   });
   todoList.innerHTML = html;

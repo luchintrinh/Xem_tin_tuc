@@ -4,6 +4,7 @@ let newsContainer = document.querySelector("#news-container");
 let btnPrev = document.querySelector("#btn-prev");
 let btnNext = document.querySelector("#btn-next");
 let pageNum = document.querySelector("a#page-num");
+let pageBox = document.querySelector("#page-num-box");
 
 let curPage = 1;
 
@@ -13,6 +14,7 @@ let currentUser = localStorage.hasOwnProperty("currentUser")
   : "";
 
 if (currentUser !== "") {
+  pageBox.style.display = "none";
   getNews("us", "business", 5, curPage);
   // gán số trang mặc định khi load tin
   pageNum.textContent = curPage;
@@ -26,6 +28,7 @@ if (currentUser !== "") {
     pageNum.textContent = curPage;
   });
 } else {
+  pageBox.style.display = "none";
   alert("Hãy đăng nhập trước!");
 }
 
@@ -56,7 +59,6 @@ async function getNews(country, page) {
       throw new Error("đã truy cập quá giới hạn 100 lần");
     }
     // bắt lỗi khi chạy từ tập tin không thông qua server
-
     if (newsArr.code === "corsNotAllowed") {
       throw new Error(newsArr.message);
     }
